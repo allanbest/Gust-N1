@@ -45,6 +45,7 @@ jobs:
           if-no-files-found: ignore
 
       - name: Convert layout for the 3D viewer
+        if: always() && hashFiles('runs/full/final/gds/n1_soc.gds') != ''
         run: |
           mkdir -p v1.0/layout
           python - <<'EOF'
@@ -58,6 +59,7 @@ jobs:
           ls -la v1.0/layout
 
       - name: Publish layout to the branch
+        if: always() && hashFiles('v1.0/layout/gust_n1_v1.0.oas') != ''
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
