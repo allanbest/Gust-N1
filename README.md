@@ -8,10 +8,20 @@ Designed by Fable 5.2 for Allan. Verified and laid out with Claude. MIT licensed
 
 | Version | What it is | 3D chip | Folder |
 |---|---|---|---|
-| **v1.0** | **Two cores**, atomics, instruction caches, timer (CLINT) and interrupt controller (PLIC), UART, external RAM port | ⏳ layout running (link below) | [`v1.0/`](v1.0/) |
+| **v1.0** | **Two cores**, atomics, instruction caches, timer (CLINT) and interrupt controller (PLIC), UART, external RAM port | **[Open in 3D](https://gds-viewer.tinytapeout.com/?model=https://raw.githubusercontent.com/allanbest/Gust-N1/main/v1.0/layout/gust_n1_v1.0.oas&pdk=sky130A)** | [`v1.0/`](v1.0/) |
 | v0.1 | One core plus user/supervisor modes and an Sv32 MMU (stage 1) | **[Open in 3D](https://gds-viewer.tinytapeout.com/?model=https://raw.githubusercontent.com/allanbest/Gust-N1/main/v0.1/layout/gust_n1.oas&pdk=sky130A)** | [`v0.1/`](v0.1/) |
 
-**v1.0 in 3D:** [open viewer](https://gds-viewer.tinytapeout.com/?model=https://raw.githubusercontent.com/allanbest/Gust-N1/main/v1.0/layout/gust_n1_v1.0.oas&pdk=sky130A). This link works once the GitHub layout run has finished and added `v1.0/layout/gust_n1_v1.0.oas`.
+**v1.0 layout** (sky130, LibreLane 3.0.14, 1.1 × 1.1 mm die, both cores with 4-line I-caches):
+
+| Metric | Value |
+|---|---|
+| Standard cells | 66,822 (0.60 mm², 51% utilization) |
+| Routing DRC / Magic DRC / LVS / antenna | 0 / 0 / 0 / 0 |
+| Clock (typical corner) | ~19 MHz (−1.96 ns at a 50 ns target) |
+| Worst corner | ~9.4 MHz (−56.3 ns) |
+| Hold | −0.04 ns (minor) |
+
+Timing repair was switched off so the run fits GitHub's 6-hour limit. These clock figures are therefore unoptimised; Gust v1.0, with repair on, reached about 36 MHz. Files: `v1.0/layout/`.
 
 ## N1 v1.0 at a glance
 
