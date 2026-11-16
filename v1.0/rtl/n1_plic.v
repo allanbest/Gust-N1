@@ -31,15 +31,15 @@ module n1_plic #(
     // best pending source for each context
     reg [2:0] best_id [0:NCTX-1];
     reg [2:0] best_pr [0:NCTX-1];
-    integer c, i;
+    integer c_0, i_0, c_1, i_1, c_2, i_2;   // one loop variable per always block (Yosys: no shared drivers)
     always @* begin
-        for (c = 0; c < NCTX; c = c + 1) begin
-            best_id[c] = 3'd0;
-            best_pr[c] = 3'd0;
-            for (i = 7; i >= 1; i = i - 1)
-                if (pending[i] & enable[c][i] & (prio[i] != 3'd0) & (prio[i] >= best_pr[c])) begin
-                    best_id[c] = i[2:0];
-                    best_pr[c] = prio[i];
+        for (c_0 = 0; c_0 < NCTX; c_0 = c_0 + 1) begin
+            best_id[c_0] = 3'd0;
+            best_pr[c_0] = 3'd0;
+            for (i_0 = 7; i_0 >= 1; i_0 = i_0 - 1)
+                if (pending[i_0] & enable[c_0][i_0] & (prio[i_0] != 3'd0) & (prio[i_0] >= best_pr[c_0])) begin
+                    best_id[c_0] = i_0[2:0];
+                    best_pr[c_0] = prio[i_0];
                 end
         end
     end
@@ -59,35 +59,35 @@ module n1_plic #(
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
             pending <= 7'b0; inservice <= 7'b0;
-            for (i = 1; i <= 7; i = i + 1) prio[i] <= 3'd0;
-            for (c = 0; c < NCTX; c = c + 1) begin
-                enable[c] <= 7'b0; thresh[c] <= 3'd0;
+            for (i_1 = 1; i_1 <= 7; i_1 = i_1 + 1) prio[i_1] <= 3'd0;
+            for (c_1 = 0; c_1 < NCTX; c_1 = c_1 + 1) begin
+                enable[c_1] <= 7'b0; thresh[c_1] <= 3'd0;
             end
         end else begin
-            for (i = 1; i <= 7; i = i + 1) begin
-                if (src[i] & ~inservice[i]) pending[i] <= 1'b1;
-                if (claim && claim_id == i) begin
-                    pending[i]   <= 1'b0;
-                    inservice[i] <= 1'b1;
+            for (i_1 = 1; i_1 <= 7; i_1 = i_1 + 1) begin
+                if (src[i_1] & ~inservice[i_1]) pending[i_1] <= 1'b1;
+                if (claim && claim_id == i_1) begin
+                    pending[i_1]   <= 1'b0;
+                    inservice[i_1] <= 1'b1;
                 end
-                if (complete && wdata[2:0] == i) inservice[i] <= 1'b0;
-                if (sel & we & ~is_ctx & (addr[20:0] == 4*i)) prio[i] <= wdata[2:0];
+                if (complete && wdata[2:0] == i_1) inservice[i_1] <= 1'b0;
+                if (sel & we & ~is_ctx & (addr[20:0] == 4*i_1)) prio[i_1] <= wdata[2:0];
             end
-            for (c = 0; c < NCTX; c = c + 1) begin
-                if (sel & we & ~is_ctx & (addr[20:0] == 21'h002000 + 21'h80*c)) enable[c] <= wdata[7:1];
-                if (sel & we & is_ctx & (ctx_no == c) & (addr[11:0] == 12'h000)) thresh[c] <= wdata[2:0];
+            for (c_1 = 0; c_1 < NCTX; c_1 = c_1 + 1) begin
+                if (sel & we & ~is_ctx & (addr[20:0] == 21'h002000 + 21'h80*c_1)) enable[c_1] <= wdata[7:1];
+                if (sel & we & is_ctx & (ctx_no == c_1) & (addr[11:0] == 12'h000)) thresh[c_1] <= wdata[2:0];
             end
         end
     end
     always @(posedge clk) begin
         if (sel & ~we) begin
             rdata <= 32'b0;
-            for (i = 1; i <= 7; i = i + 1)
-                if (~is_ctx & (addr[20:0] == 4*i)) rdata <= {29'b0, prio[i]};
+            for (i_2 = 1; i_2 <= 7; i_2 = i_2 + 1)
+                if (~is_ctx & (addr[20:0] == 4*i_2)) rdata <= {29'b0, prio[i_2]};
             if (~is_ctx & (addr[20:0] == 21'h001000)) rdata <= {24'b0, pending, 1'b0};
-            for (c = 0; c < NCTX; c = c + 1) begin
-                if (~is_ctx & (addr[20:0] == 21'h002000 + 21'h80*c)) rdata <= {24'b0, enable[c], 1'b0};
-                if (is_ctx & (ctx_no == c) & (addr[11:0] == 12'h000)) rdata <= {29'b0, thresh[c]};
+            for (c_2 = 0; c_2 < NCTX; c_2 = c_2 + 1) begin
+                if (~is_ctx & (addr[20:0] == 21'h002000 + 21'h80*c_2)) rdata <= {24'b0, enable[c_2], 1'b0};
+                if (is_ctx & (ctx_no == c_2) & (addr[11:0] == 12'h000)) rdata <= {29'b0, thresh[c_2]};
             end
             if (claim) rdata <= {29'b0, claim_id};
         end
