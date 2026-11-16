@@ -1,0 +1,28 @@
+strash
+ifraig
+scorr
+&get -n
+&st
+&syn2
+&if -g -K 6
+&synch2
+&nf {D}
+&st
+&syn2
+&if -g -K 6
+&synch2
+&nf {D}
+&st
+&syn2
+&if -g -K 6
+&synch2
+&nf {D}
+&dch
+&nf {D}
+&put
+buffer -c
+topo
+stime -c
+upsize {D} -c
+dnsize {D} -c
+stime -p

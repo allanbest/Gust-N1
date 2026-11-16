@@ -2,7 +2,7 @@
 
 Gust N1 is the Gust v1.0 RV32IMC core scaled toward a computer chip. Version 0.1 is **stage 1 of 5**: it adds the privilege levels and virtual memory an operating system needs. Everything else in the core is reused from Gust v1.0 (the microcontroller chip on [Micro Gust](https://github.com/allanbest/Gust---RISC-V)).
 
-**[Open the layout in the 3D viewer](https://gds-viewer.tinytapeout.com/?model=https://raw.githubusercontent.com/allanbest/Gust-N1/main/layout/gust_n1.oas&pdk=sky130A)**
+**[Open the layout in the 3D viewer](https://gds-viewer.tinytapeout.com/?model=https://raw.githubusercontent.com/allanbest/Gust-N1/main/v0.1/layout/gust_n1.oas&pdk=sky130A)**
 
 | | Gust v1.0 | **Gust N1 v0.1** |
 |---|---|---|
